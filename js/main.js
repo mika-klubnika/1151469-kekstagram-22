@@ -1,20 +1,13 @@
 'use strict';
 
-const getRandomNumber = (min, max) => {
-  if (min < 0 || min >= max) {
-    return 0;
-  }
-  return Math.floor((Math.random() * (max - min + 1)) + min);
-};
-
-const checksLengthString = (comment, maxLengthComment) => {
-  if (comment.length > maxLengthComment) {
-    return false;
-  }
-  return true;
-};
-
-checksLengthString('Lorem ipsum dolor sit amet consectetur adipisicing', 60);
+const MIN_USER_PUBLICATION = 1;
+const USER_PUBLICATION = 25;
+const MIN_NUMBER_AVATAR = 1;
+const MAX_NUMBER_AVATAR = 6;
+const MIN_NUMBER_LIKES = 15;
+const MAX_NUMBER_LIKES = 200;
+const MIN_NUMBER_COMMENTS = 1;
+const MAX_NUMBER_COMMENTS = 5;
 
 const DESCRIPTION_PHOTOS = [
   'Каталась на лошадке. Высоченный, седло пришлось в прыжке на него закидывать',
@@ -25,7 +18,7 @@ const DESCRIPTION_PHOTOS = [
   'Вот такой мой маленький уютный рабочий уголок',
 ];
 
-const COMMENTATORS_MESSAGE = [
+const COMMENTATORS_MESSAGES = [
   'Всё отлично!',
   'В целом всё неплохо. Но не всё.',
   'Когда вы делаете фотографию, хорошо бы убирать палец из кадра. В конце концов это просто непрофессионально.',
@@ -43,40 +36,83 @@ const COMMENTATORS_NAMES = [
   'Люсетта',
 ];
 
-const USER_PUBLICATION = 25;
-const MIN_AVATAR = 1;
-const MAX_AVATAR = 6;
-const MIN_LIKES = 15;
-const MAX_LIKES = 200;
-
-// рандомный элемент массива
-const getRandomArrayElement = (elements) => {
-  return elements[getRandomNumber(0, elements.length - 1)];
+//Рандомные целые положительные числа
+const getRandomInt = (min, max) => {
+  if (min < 0 || min >= max) {
+    return 0;
+  }
+  return Math.floor((Math.random() * (max - min + 1)) + min);
 };
 
-// создаем объект комментаторов
-const commentators = (id) => {
+//Проверка длины строки
+const checksLengthString = (comment, maxLengthComment) => {
+  if (comment.length > maxLengthComment) {
+    return false;
+  }
+  return true;
+};
+
+checksLengthString('Lorem ipsum dolor sit amet consectetur adipisicing', 60);
+
+//Рандомный элемент массива
+const getRandomArrayElement = (elements) => {
+  return elements[getRandomInt(0, elements.length - 1)];
+};
+
+//генерируем рандомное кол-во строк для комента
+const getRandomArray = (array, length) => {
+  const arrayCopy = [...array];
+  for(let i = 0; i < (array.length - length); i++) {
+    arrayCopy.splice(getRandomInt(0, arrayCopy.length), 1)
+  }
+  return arrayCopy;
+};
+
+//Функция конкатенации строк
+const getRandomMessage = (comments, stringCount) => {
+  return getRandomArray(comments, stringCount).join(' ');
+};
+
+
+//Объект комментариев
+const getComments = (id) => {
   return {
-    id: ++id * 32,
-    avatar: `img/avatar-${getRandomNumber(MIN_AVATAR, MAX_AVATAR)}.svg`,
-    message: getRandomArrayElement(COMMENTATORS_MESSAGE),
+    id: id,
+    avatar: `img/avatar-${getRandomInt(MIN_NUMBER_AVATAR, MAX_NUMBER_AVATAR)}.svg`,
+    message: getRandomMessage(COMMENTATORS_MESSAGES, getRandomInt(MIN_NUMBER_COMMENTS, MAX_NUMBER_COMMENTS)),
     name: getRandomArrayElement(COMMENTATORS_NAMES),
   };
 };
 
-const randomComments = new Array(6).fill().map((item, i) => commentators(i));
+//Массив рандомных уникальных чисел
+const getRandomNumbers = (min, max) => {
+  const numbers = [];
 
+  const uniqueNumbers = () => {
+    const id = getRandomInt(min, max);
+    const checkId = numbers.some(item => item ===id);
+    if(checkId) {
+      return uniqueNumbers()
+    }
+    numbers.push(id);
+    return id;
+  };
+  return new Array(max).fill().map(item => uniqueNumbers(item));
+};
 
-// создаем объект постов юзера
-const publishedPhoto = (id) => {
+//получаем рандомный id для объекта коментов
+const getIdComments = (commentsNumber) => getRandomNumbers(1, commentsNumber).map(id => getComments(id));
+
+//Объект постов юзера
+const getPublishedPhoto = (id) => {
   return {
-    id: ++id,
+    id: id,
     url: `photos/${id}.jpg`,
     description: getRandomArrayElement(DESCRIPTION_PHOTOS),
-    likes: getRandomNumber(MIN_LIKES, MAX_LIKES),
-    comments: getRandomArrayElement(randomComments),
+    likes: getRandomInt(MIN_NUMBER_LIKES, MAX_NUMBER_LIKES),
+    comments: getIdComments(getRandomInt(MIN_NUMBER_COMMENTS, MAX_NUMBER_COMMENTS)),
   };
 };
 
-const userGallery = new Array(USER_PUBLICATION).fill().map((item, i) => publishedPhoto(i));
-console.log(userGallery);
+const userGallery = getRandomNumbers(MIN_USER_PUBLICATION, USER_PUBLICATION).map((id) => getPublishedPhoto(id));
+userGallery;
