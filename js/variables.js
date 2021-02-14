@@ -1,13 +1,9 @@
-import {getRandomInt, getRandomArrayElement, getRandomMessage} from './util.js';
-
-const MIN_USER_PUBLICATION = 1;
-const USER_PUBLICATION = 25;
-const MIN_NUMBER_AVATAR = 1;
+const MAX_USER_PUBLICATION = 25;
 const MAX_NUMBER_AVATAR = 6;
 const MIN_NUMBER_LIKES = 15;
 const MAX_NUMBER_LIKES = 200;
-const MIN_NUMBER_COMMENTS = 1;
 const MAX_NUMBER_COMMENTS = 5;
+const MIN_ELEMENTS = 1;
 
 const DESCRIPTION_PHOTOS = [
   'Каталась на лошадке. Высоченный, седло пришлось в прыжке на него закидывать',
@@ -36,45 +32,14 @@ const COMMENTATORS_NAMES = [
   'Люсетта',
 ];
 
-//Объект комментариев
-const getComments = (id) => {
-  return {
-    id: id,
-    avatar: `img/avatar-${getRandomInt(MIN_NUMBER_AVATAR, MAX_NUMBER_AVATAR)}.svg`,
-    message: getRandomMessage(COMMENTATORS_MESSAGES, getRandomInt(MIN_NUMBER_COMMENTS, MAX_NUMBER_COMMENTS)),
-    name: getRandomArrayElement(COMMENTATORS_NAMES),
-  };
+export {
+  MAX_USER_PUBLICATION,
+  MAX_NUMBER_AVATAR,
+  MIN_NUMBER_LIKES,
+  MAX_NUMBER_LIKES,
+  MAX_NUMBER_COMMENTS,
+  DESCRIPTION_PHOTOS,
+  COMMENTATORS_MESSAGES,
+  COMMENTATORS_NAMES,
+  MIN_ELEMENTS
 };
-
-//Массив рандомных уникальных чисел
-const getRandomNumbers = (min, max) => {
-  const numbers = [];
-
-  const uniqueNumbers = () => {
-    const id = getRandomInt(min, max);
-    const checkId = numbers.some(item => item ===id);
-    if(checkId) {
-      return uniqueNumbers()
-    }
-    numbers.push(id);
-    return id;
-  };
-  return new Array(max).fill().map(item => uniqueNumbers(item));
-};
-
-//получаем рандомный id для объекта коментов
-const getIdComments = (commentsNumber) => getRandomNumbers(1, commentsNumber).map(id => getComments(id));
-
-//Объект постов юзера
-const getPublishedPhoto = (id) => {
-  return {
-    id: id,
-    url: `photos/${id}.jpg`,
-    description: getRandomArrayElement(DESCRIPTION_PHOTOS),
-    likes: getRandomInt(MIN_NUMBER_LIKES, MAX_NUMBER_LIKES),
-    comments: getIdComments(getRandomInt(MIN_NUMBER_COMMENTS, MAX_NUMBER_COMMENTS)),
-  };
-};
-
-const userGallery = getRandomNumbers(MIN_USER_PUBLICATION, USER_PUBLICATION).map((id) => getPublishedPhoto(id));
-userGallery;
