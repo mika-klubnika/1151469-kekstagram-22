@@ -1,5 +1,6 @@
-import { MIN_ELEMENTS } from './variables.js';
+import { MIN_ELEMENTS } from './constants.js';
 import { getComments } from './mocks.js';
+
 
 //Рандомный целые положительные числа
 const getRandomInt = (min, max) => {
@@ -56,6 +57,7 @@ const getRandomNumbers = (min, max) => {
 
 //получаем рандомный id для объекта коментов
 const getCommentsIds = (commentsCount) => getRandomNumbers(MIN_ELEMENTS, commentsCount).map(id => getComments(id));
+
 
 export {
   getRandomInt,
