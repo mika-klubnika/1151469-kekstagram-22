@@ -58,11 +58,15 @@ const getRandomNumbers = (min, max) => {
 //получаем рандомный id для объекта коментов
 const getCommentsIds = (commentsCount) => getRandomNumbers(MIN_ELEMENTS, commentsCount).map(id => getComments(id));
 
+const isEscEvent = (evt) => {
+  return evt.key === ('Escape' || 'Esc');
+};
 
 export {
   getRandomInt,
   getRandomArrayElement,
   getRandomMessage,
   getCommentsIds,
-  getRandomNumbers
+  getRandomNumbers,
+  isEscEvent
 };

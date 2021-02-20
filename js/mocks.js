@@ -64,7 +64,6 @@ const getPublishedPhoto = (id) => {
   };
 };
 
-// const userGallery = getRandomNumbers(MIN_ELEMENTS, MAX_USER_PUBLICATION).map((id) => getPublishedPhoto(id));
 const userGallery = () => getRandomNumbers(MIN_ELEMENTS, MAX_USER_PUBLICATION).map((id) => getPublishedPhoto(id));
 
 userGallery;
