@@ -1,8 +1,7 @@
 import { userGallery } from './mocks.js';
 
 const otherPhotos = document.querySelector('.pictures');
-const pictureTemplate = document.querySelector('#picture')
-  .content;
+const pictureTemplate = document.querySelector('#picture').content;
 
 const randomPhoto = userGallery();
 const pictureListFragment = document.createDocumentFragment();
