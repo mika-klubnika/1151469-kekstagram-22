@@ -1,25 +1,46 @@
-import {isEscEvent} from './util.js'
+import { isEscEvent } from './util.js'
+import { otherPhotos } from './picture.js'
+
 
 const bigPicture = document.querySelector('.big-picture');
 const bigPictureClose = bigPicture.querySelector('.big-picture__cancel');
+const pictures = document.querySelectorAll('.picture');
 const body = document.querySelector('body');
+const bigPictureImg = bigPicture.querySelector('.big-picture__img').querySelector('img');
+
+
 
 // Открываем модалку
-const pictures = document.querySelectorAll('.picture');
+// pictures.forEach(picture => {
+//   picture.addEventListener('click', (evt) => {
+//     evt.preventDefault();
+//     bigPicture.classList.remove('hidden');
+//     body.classList.add('modal-open');
+//   })
+// })
+//-------------------------------------------------------------------------
 
-pictures.forEach(picture => {
+
+const seeBigPicture = (picture, otherPhoto) => {
   picture.addEventListener('click', (evt) => {
     evt.preventDefault();
     bigPicture.classList.remove('hidden');
     body.classList.add('modal-open');
+    bigPictureImg.src = otherPhoto.url;
   })
-});
+};
+
+for (let i = 0; i < pictures.length; i++) {
+  seeBigPicture(pictures[i], otherPhotos[i])
+}
+
+//-------------------------------------------------------------------------
 
 //Закрываем модалку
 bigPictureClose.addEventListener('click', () => {
   bigPicture.classList.add('hidden');
   body.classList.remove('modal-open');
-});
+})
 
 document.addEventListener('keydown', (evt) => {
   if (isEscEvent(evt)) {
@@ -27,8 +48,7 @@ document.addEventListener('keydown', (evt) => {
     bigPicture.classList.add('hidden');
     body.classList.remove('modal-open');
   }
-});
-
+})
 
 /*
 ТЗ

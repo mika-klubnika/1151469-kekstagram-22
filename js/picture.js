@@ -1,12 +1,13 @@
-import { userGallery } from './mocks.js';
+import { getUserGallery } from './mocks.js';
 
 const otherPhotos = document.querySelector('.pictures');
 const pictureTemplate = document.querySelector('#picture').content;
 
-const randomPhoto = userGallery();
+const randomPhotos = getUserGallery();
+
 const pictureListFragment = document.createDocumentFragment();
 
-randomPhoto.forEach((picture) => {
+randomPhotos.forEach((picture) => {
   const photoElement = pictureTemplate.cloneNode(true);
   photoElement.querySelector('.picture__img').src = picture.url;
   photoElement.querySelector('.picture__likes').textContent = picture.likes;
@@ -15,3 +16,5 @@ randomPhoto.forEach((picture) => {
 });
 
 otherPhotos.appendChild(pictureListFragment);
+
+export { otherPhotos };
