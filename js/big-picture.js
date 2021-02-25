@@ -1,81 +1,71 @@
-import { isEscEvent } from './util.js'
-import { otherPhotos } from './picture.js'
+import { isEscEvent, renderNodeList } from './util.js'
+import { randomPhotos } from './picture.js'
 
 
 const bigPicture = document.querySelector('.big-picture');
 const bigPictureClose = bigPicture.querySelector('.big-picture__cancel');
-const pictures = document.querySelectorAll('.picture');
+const picturesContainer = document.querySelector('.pictures');
 const body = document.querySelector('body');
 const bigPictureImg = bigPicture.querySelector('.big-picture__img').querySelector('img');
+const likes = bigPicture.querySelector('.likes-count');
+const description = bigPicture.querySelector('.social__caption');
+const commentCount = bigPicture.querySelector('.social__comment-count');
+const loaderComment = bigPicture.querySelector('.comments-loader');
+const socialComments = bigPicture.querySelector('.social__comments');
+const socialComment = bigPicture.querySelector('.social__comment');
 
-
-
-// Открываем модалку
-// pictures.forEach(picture => {
-//   picture.addEventListener('click', (evt) => {
-//     evt.preventDefault();
-//     bigPicture.classList.remove('hidden');
-//     body.classList.add('modal-open');
-//   })
-// })
-//-------------------------------------------------------------------------
-
-
-const seeBigPicture = (picture, otherPhoto) => {
-  picture.addEventListener('click', (evt) => {
-    evt.preventDefault();
-    bigPicture.classList.remove('hidden');
-    body.classList.add('modal-open');
-    bigPictureImg.src = otherPhoto.url;
-  })
-};
-
-for (let i = 0; i < pictures.length; i++) {
-  seeBigPicture(pictures[i], otherPhotos[i])
-}
-
-//-------------------------------------------------------------------------
-
-//Закрываем модалку
-bigPictureClose.addEventListener('click', () => {
-  bigPicture.classList.add('hidden');
-  body.classList.remove('modal-open');
-})
-
-document.addEventListener('keydown', (evt) => {
+const onModalEscKeydown = (evt) => {
   if (isEscEvent(evt)) {
     evt.preventDefault();
-    bigPicture.classList.add('hidden');
-    body.classList.remove('modal-open');
+    closeModal();
   }
-})
+};
 
-/*
-ТЗ
+const onModalCloseClick = (evt) => {
+  evt.preventDefault();
+  closeModal();
+};
 
-Для отображения окна нужно удалять класс hidden у элемента .big-picture и каждый раз заполнять его данными о конкретной фотографии:
+const openModal = () => {
+  bigPicture.classList.remove('hidden');
+  body.classList.add('modal-open');
+  commentCount.classList.add('hidden');
+  loaderComment.classList.add('hidden');
 
-Адрес изображения url подставьте как src изображения внутри блока .big-picture__img.
+  document.addEventListener('keydown', onModalEscKeydown);
+  bigPictureClose.addEventListener('click', onModalCloseClick);
+};
 
-Количество лайков likes подставьте как текстовое содержание элемента .likes-count.
+const closeModal = () => {
+  bigPicture.classList.add('hidden');
+  body.classList.remove('modal-open');
 
-Количество комментариев comments подставьте как текстовое содержание элемента .comments-count.
+  document.removeEventListener('keydown', onModalEscKeydown);
+  bigPictureClose.removeEventListener('click', onModalCloseClick);
+};
 
-Список комментариев под фотографией: комментарии должны вставляться в блок .social__comments. Разметка каждого комментария должна выглядеть так:
+const getCommentNodes = (comments = []) => comments.map(comment => {
+  const node = socialComment.cloneNode(true);
+  node.querySelector('img').src = comment.avatar;
+  node.querySelector('img').alt = comment.name;
+  node.querySelector('p').textContent = comment.message;
+  return node;
+});
 
-<li class="social__comment">
-    <img
-        class="social__picture"
-        src="{{аватар}}"
-        alt="{{имя комментатора}}"
-        width="35" height="35">
-    <p class="social__text">{{текст комментария}}</p>
-</li>
-Описание фотографии description вставьте строкой в блок .social__caption.
 
-После открытия окна спрячьте блоки счётчика комментариев .social__comment-count и загрузки новых комментариев .comments-loader,
-добавив им класс hidden, с ними мы разберёмся позже, в другом домашнем задании.
+const showBigPicture = (picture, photo) => {
+  bigPictureImg.src = picture.src;
+  likes.textContent = photo.likes;
+  description.textContent = photo.description;
+  renderNodeList(socialComments, getCommentNodes(photo.comments))
+};
 
-После открытия окна добавьте тегу <body> класс modal-open, чтобы контейнер с фотографиями позади не прокручивался при скролле.
-При закрытии окна не забудьте удалить этот класс.
-*/
+const getPhotoInfo = (id) => randomPhotos.find(photo => photo.id === +id);
+
+picturesContainer.addEventListener('click', (evt) => {
+  if (evt.target.className === 'picture__img') {
+    evt.preventDefault();
+    openModal();
+    showBigPicture(evt.target, getPhotoInfo(evt.target.dataset.id))
+  }
+});

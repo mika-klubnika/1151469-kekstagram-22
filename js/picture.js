@@ -12,9 +12,10 @@ randomPhotos.forEach((picture) => {
   photoElement.querySelector('.picture__img').src = picture.url;
   photoElement.querySelector('.picture__likes').textContent = picture.likes;
   photoElement.querySelector('.picture__comments').textContent = picture.comments.length;
+  photoElement.querySelector('.picture__img').dataset.id = picture.id;
   pictureListFragment.appendChild(photoElement);
 });
 
 otherPhotos.appendChild(pictureListFragment);
 
-export { otherPhotos };
+export { randomPhotos };

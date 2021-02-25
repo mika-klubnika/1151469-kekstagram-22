@@ -66,6 +66,4 @@ const getPublishedPhoto = (id) => {
 
 const getUserGallery = () => getRandomNumbers(MIN_ELEMENTS, MAX_USER_PUBLICATION).map((id) => getPublishedPhoto(id));
 
-getUserGallery;
-
 export { getUserGallery, getComments };
