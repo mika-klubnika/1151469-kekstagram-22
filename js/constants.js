@@ -4,6 +4,7 @@ const MIN_NUMBER_LIKES = 15;
 const MAX_NUMBER_LIKES = 200;
 const MAX_NUMBER_COMMENTS = 5;
 const MIN_ELEMENTS = 1;
+const BODY = document.querySelector('body');
 
 
 export {
@@ -12,5 +13,6 @@ export {
   MIN_NUMBER_LIKES,
   MAX_NUMBER_LIKES,
   MAX_NUMBER_COMMENTS,
-  MIN_ELEMENTS
+  MIN_ELEMENTS,
+  BODY
 };
