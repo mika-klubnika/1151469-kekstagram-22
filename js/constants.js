@@ -1,11 +1,14 @@
+const body = document.body;
+
 const MAX_USER_PUBLICATION = 25;
 const MAX_NUMBER_AVATAR = 6;
 const MIN_NUMBER_LIKES = 15;
 const MAX_NUMBER_LIKES = 200;
 const MAX_NUMBER_COMMENTS = 5;
 const MIN_ELEMENTS = 1;
-const BODY = document.querySelector('body');
 
+const MIN_PHOTO_SIZE = 25;
+const MAX_PHOTO_SIZE = 100;
 
 export {
   MAX_USER_PUBLICATION,
@@ -14,5 +17,7 @@ export {
   MAX_NUMBER_LIKES,
   MAX_NUMBER_COMMENTS,
   MIN_ELEMENTS,
-  BODY
+  body,
+  MIN_PHOTO_SIZE,
+  MAX_PHOTO_SIZE
 };

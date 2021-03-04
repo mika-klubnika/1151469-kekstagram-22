@@ -1,6 +1,6 @@
 import { isEscEvent, renderNodeList } from './util.js'
 import { randomPhotos } from './picture.js'
-import { BODY } from './constants.js';
+import { body } from './constants.js';
 
 const bigPicture = document.querySelector('.big-picture');
 const bigPictureClose = bigPicture.querySelector('.big-picture__cancel');
@@ -27,7 +27,7 @@ const onModalCloseClick = (evt) => {
 
 const openModal = () => {
   bigPicture.classList.remove('hidden');
-  BODY.classList.add('modal-open');
+  body.classList.add('modal-open');
   commentCount.classList.add('hidden');
   loaderComment.classList.add('hidden');
 
@@ -37,7 +37,7 @@ const openModal = () => {
 
 const closeModal = () => {
   bigPicture.classList.add('hidden');
-  BODY.classList.remove('modal-open');
+  body.classList.remove('modal-open');
 
   document.removeEventListener('keydown', onModalEscKeydown);
   bigPictureClose.removeEventListener('click', onModalCloseClick);
