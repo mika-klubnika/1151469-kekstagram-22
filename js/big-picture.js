@@ -1,11 +1,9 @@
 import { isEscEvent, renderNodeList } from './util.js'
 import { randomPhotos } from './picture.js'
 
-
 const bigPicture = document.querySelector('.big-picture');
 const bigPictureClose = bigPicture.querySelector('.big-picture__cancel');
 const picturesContainer = document.querySelector('.pictures');
-const body = document.querySelector('body');
 const bigPictureImg = bigPicture.querySelector('.big-picture__img').querySelector('img');
 const likes = bigPicture.querySelector('.likes-count');
 const description = bigPicture.querySelector('.social__caption');
@@ -28,7 +26,7 @@ const onModalCloseClick = (evt) => {
 
 const openModal = () => {
   bigPicture.classList.remove('hidden');
-  body.classList.add('modal-open');
+  document.body.classList.add('modal-open');
   commentCount.classList.add('hidden');
   loaderComment.classList.add('hidden');
 
@@ -38,7 +36,7 @@ const openModal = () => {
 
 const closeModal = () => {
   bigPicture.classList.add('hidden');
-  body.classList.remove('modal-open');
+  document.body.classList.remove('modal-open');
 
   document.removeEventListener('keydown', onModalEscKeydown);
   bigPictureClose.removeEventListener('click', onModalCloseClick);
