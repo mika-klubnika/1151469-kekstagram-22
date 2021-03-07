@@ -1,7 +1,7 @@
 /* global noUiSlider:readonly */
 import { isEscEvent } from './util.js'
 import {
-  body,
+  STEP_SIZE_PHOTO,
   MIN_PHOTO_SIZE,
   MAX_PHOTO_SIZE
 } from './constants.js';
@@ -106,15 +106,16 @@ const openModal = () => {
   effectLevel.classList.add('hidden');
 
   imgEdit.classList.remove('hidden');
-  body.classList.add('modal-open');
+  document.body.classList.add('modal-open');
 
   document.addEventListener('keydown', onModalEscKeydown);
   close.addEventListener('click', onModalCloseClick);
+
 };
 
 const closeModal = () => {
   imgEdit.classList.add('hidden');
-  body.classList.remove('modal-open');
+  document.body.classList.remove('modal-open');
 
   photoPreview.style = {};
   photoPreview.className = '';
@@ -129,25 +130,21 @@ downloadButton.addEventListener('change', (evt) => {
   openModal();
 });
 
-close.addEventListener('click', () => {
-  closeModal();
-});
-
 //Уменьшить/Увеличить изображение
-const buttonSmaller = () => {
+const reducesSizeImg = () => {
   if (photoSize > MIN_PHOTO_SIZE) {
-    photoSize -= 25;
+    photoSize -= STEP_SIZE_PHOTO;
     photoPreview.style.transform = `scale(0.${photoSize})`;
   }
   controlValue.value = `${photoSize}%`;
 }
 
-const buttonBigger = () => {
+const increasesSizeImg = () => {
   if (photoSize < MAX_PHOTO_SIZE) {
-    photoSize += 25;
+    photoSize += STEP_SIZE_PHOTO;
     photoPreview.style.transform = `scale(0.${photoSize})`;
   }
-  if (photoSize == MAX_PHOTO_SIZE) {
+  if (photoSize === MAX_PHOTO_SIZE) {
     photoPreview.style.transform = 'scale(1)';
   }
   controlValue.value = `${photoSize}%`;
@@ -156,10 +153,10 @@ const buttonBigger = () => {
 photoSizeButton.addEventListener('click', (evt) => {
   const className = evt.target.classList[1];
   if (className === 'scale__control--smaller') {
-    buttonSmaller()
+    reducesSizeImg()
   }
   if (className === 'scale__control--bigger') {
-    buttonBigger()
+    increasesSizeImg()
   }
 });
 
