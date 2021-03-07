@@ -1,9 +1,11 @@
 /* global noUiSlider:readonly */
-import { isEscEvent } from './util.js'
+import { isEscEvent, checkStringLength } from './util.js'
 import {
   body,
   MIN_PHOTO_SIZE,
-  MAX_PHOTO_SIZE
+  MAX_PHOTO_SIZE,
+  MAX_HASHTAG_LENGTH,
+  MAX_COMMENT_LENGTH
 } from './constants.js';
 
 const imgEdit = document.querySelector('.img-upload__overlay');
@@ -20,6 +22,9 @@ const slider = document.querySelector('.effect-level__slider');
 const effectList = document.querySelector('.effects__list');
 const effectLevel = document.querySelector('.img-upload__effect-level');
 const effectLevelValue = document.querySelector('.effect-level__value');
+
+const hashtags = document.querySelector('.text__hashtags');
+const description = document.querySelector('.text__description');
 
 const SLIDER_OPTIONS = {
   none: {
@@ -132,7 +137,7 @@ downloadButton.addEventListener('change', (evt) => {
 close.addEventListener('click', () => {
   closeModal();
 });
-
+openModal();
 //Уменьшить/Увеличить изображение
 const buttonSmaller = () => {
   if (photoSize > MIN_PHOTO_SIZE) {
@@ -206,4 +211,44 @@ effectList.addEventListener('click', (evt) => {
         (isModifierNone ? '' : `(${effectLevelValue.value}${filter.measurement})`);
     })
   }
+});
+
+//валидация хештегов
+hashtags.addEventListener('input', (evt) => {
+  const hashtag = hashtags.value;
+  const arrayHashtags = hashtag.split();
+
+  for(let i = 0; i <= arrayHashtags.length; i++) {
+    if(arrayHashtags[i] !== '#'){
+      evt.target.setCustomValidity('Хэштег должен начинаться с символа #');
+    }
+  }
+});
+
+// if (!hashtag.match(/^[а-яА-ЯёЁa-zA-Z0-9]+$/)) {}
+// console.log(hashtags.validity);
+
+/*
+1- хэш-тег начинается с символа # (решётка);
+2- строка после решётки должна состоять из букв и чисел и не может содержать пробелы, спецсимволы (#, @, $ и т. п.), символы пунктуации (тире, дефис, запятая и т. п.), эмодзи и т. д.;
+3- хеш-тег не может состоять только из одной решётки;
+4- максимальная длина одного хэш-тега 20 символов, включая решётку;
+5- хэш-теги нечувствительны к регистру: #ХэшТег и #хэштег считаются одним и тем же тегом;
+6- хэш-теги разделяются пробелами;
+7- один и тот же хэш-тег не может быть использован дважды;
+8- нельзя указать больше пяти хэш-тегов;
+
+хэш-теги необязательны;
+если фокус находится в поле ввода хэш-тега, нажатие на Esc не должно приводить к закрытию формы редактирования изображения.
+*/
+
+
+//валидация комментария
+description.addEventListener('input', () => {
+  if (checkStringLength(description.value, MAX_COMMENT_LENGTH)) {
+    description.setCustomValidity('Еще ' + (MAX_COMMENT_LENGTH - description.value.length) + ' символов');
+  } else {
+    description.setCustomValidity('');
+  }
+  description.reportValidity();
 });
