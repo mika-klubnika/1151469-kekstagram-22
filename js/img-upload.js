@@ -5,6 +5,7 @@ import {
   MIN_PHOTO_SIZE,
   MAX_PHOTO_SIZE,
   MAX_HASHTAG_LENGTH,
+  MAX_HASHTAG_COUNT,
   MAX_COMMENT_LENGTH
 } from './constants.js';
 
@@ -135,13 +136,6 @@ downloadButton.addEventListener('change', (evt) => {
   openModal();
 });
 
-<<<<<<< HEAD
-close.addEventListener('click', () => {
-  closeModal();
-});
-openModal();
-=======
->>>>>>> module6-task1
 //Уменьшить/Увеличить изображение
 const reducesSizeImg = () => {
   if (photoSize > MIN_PHOTO_SIZE) {
@@ -219,16 +213,30 @@ effectList.addEventListener('click', (evt) => {
 
 //валидация хештегов
 hashtags.addEventListener('input', (evt) => {
-  const hashtag = hashtags.value;
-  const arrayHashtags = hashtag.split();
+  const hashtag = evt.target.value.toLowerCase(); //приводит к одному регистру
+  const arrayHashtags = hashtag.split(''); // делает массив символов
 
-  for(let i = 0; i <= arrayHashtags.length; i++) {
-    if(arrayHashtags[i] !== '#'){
+  for (let i = 0; i <= arrayHashtags.length; i++) {
+    if (arrayHashtags[i].charAt(0) !== '#') { //найти метод проверки первого символа каждого слова
       evt.target.setCustomValidity('Хэштег должен начинаться с символа #');
     }
+    else if (arrayHashtags[i].length > MAX_HASHTAG_LENGTH) {
+      evt.target.setCustomValidity('Максимальная длина хэштега 20 символов, включая решётку');
+    }
+    else if(arrayHashtags.length > MAX_HASHTAG_COUNT) {
+      evt.target.setCustomValidity('нельзя указать больше 5 хэш-тегов')
+    }
+    else if (arrayHashtags[i] === arrayHashtags[i].includes(arrayHashtags[i])) {
+      evt.target.setCustomValidity('повтор')
+    }
+    else {
+      evt.target.setCustomValidity(''); //сбросить ошибку
+    }
+    evt.target.reportValidity(); //проверяет валидность поля на каждый ввод символа
   }
 });
-
+//charAt()  возвращает указанный символ из строки.
+//includes() проверяет, содержит ли строка заданную подстроку, и возвращает, соответственно true или false
 // if (!hashtag.match(/^[а-яА-ЯёЁa-zA-Z0-9]+$/)) {}
 // console.log(hashtags.validity);
 
@@ -240,7 +248,7 @@ hashtags.addEventListener('input', (evt) => {
 5- хэш-теги нечувствительны к регистру: #ХэшТег и #хэштег считаются одним и тем же тегом;
 6- хэш-теги разделяются пробелами;
 7- один и тот же хэш-тег не может быть использован дважды;
-8- нельзя указать больше пяти хэш-тегов;
+8- нельзя указать больше 5 хэш-тегов;
 
 хэш-теги необязательны;
 если фокус находится в поле ввода хэш-тега, нажатие на Esc не должно приводить к закрытию формы редактирования изображения.
@@ -252,7 +260,9 @@ description.addEventListener('input', () => {
   if (checkStringLength(description.value, MAX_COMMENT_LENGTH)) {
     description.setCustomValidity('Еще ' + (MAX_COMMENT_LENGTH - description.value.length) + ' символов');
   } else {
-    description.setCustomValidity('');
+    description.setCustomValidity(''); //сбросить ошибку
   }
-  description.reportValidity();
+  description.reportValidity(); //проверяет валидность поля на каждый ввод символа
 });
+
+openModal()
