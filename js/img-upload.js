@@ -1,12 +1,9 @@
 /* global noUiSlider:readonly */
-import { isEscEvent, checkStringLength } from './util.js'
+import { isEscEvent } from './util.js'
 import {
   STEP_SIZE_PHOTO,
   MIN_PHOTO_SIZE,
-  MAX_PHOTO_SIZE,
-  MAX_HASHTAG_LENGTH,
-  MAX_HASHTAG_COUNT,
-  MAX_COMMENT_LENGTH
+  MAX_PHOTO_SIZE
 } from './constants.js';
 
 const imgEdit = document.querySelector('.img-upload__overlay');
@@ -23,9 +20,6 @@ const slider = document.querySelector('.effect-level__slider');
 const effectList = document.querySelector('.effects__list');
 const effectLevel = document.querySelector('.img-upload__effect-level');
 const effectLevelValue = document.querySelector('.effect-level__value');
-
-const hashtags = document.querySelector('.text__hashtags');
-const description = document.querySelector('.text__description');
 
 const SLIDER_OPTIONS = {
   none: {
@@ -103,8 +97,7 @@ const onModalEscKeydown = (evt) => {
   }
 };
 
-const onModalCloseClick = (evt) => {
-  evt.preventDefault();
+const onModalCloseClick = () => {
   closeModal();
 };
 
@@ -116,7 +109,6 @@ const openModal = () => {
 
   document.addEventListener('keydown', onModalEscKeydown);
   close.addEventListener('click', onModalCloseClick);
-
 };
 
 const closeModal = () => {
@@ -210,59 +202,3 @@ effectList.addEventListener('click', (evt) => {
     })
   }
 });
-
-//валидация хештегов
-hashtags.addEventListener('input', (evt) => {
-  const hashtag = evt.target.value.toLowerCase(); //приводит к одному регистру
-  const arrayHashtags = hashtag.split(''); // делает массив символов
-
-  for (let i = 0; i <= arrayHashtags.length; i++) {
-    if (arrayHashtags[i].charAt(0) !== '#') { //найти метод проверки первого символа каждого слова
-      evt.target.setCustomValidity('Хэштег должен начинаться с символа #');
-    }
-    else if (arrayHashtags[i].length > MAX_HASHTAG_LENGTH) {
-      evt.target.setCustomValidity('Максимальная длина хэштега 20 символов, включая решётку');
-    }
-    else if(arrayHashtags.length > MAX_HASHTAG_COUNT) {
-      evt.target.setCustomValidity('нельзя указать больше 5 хэш-тегов')
-    }
-    else if (arrayHashtags[i] === arrayHashtags[i].includes(arrayHashtags[i])) {
-      evt.target.setCustomValidity('повтор')
-    }
-    else {
-      evt.target.setCustomValidity(''); //сбросить ошибку
-    }
-    evt.target.reportValidity(); //проверяет валидность поля на каждый ввод символа
-  }
-});
-//charAt()  возвращает указанный символ из строки.
-//includes() проверяет, содержит ли строка заданную подстроку, и возвращает, соответственно true или false
-// if (!hashtag.match(/^[а-яА-ЯёЁa-zA-Z0-9]+$/)) {}
-// console.log(hashtags.validity);
-
-/*
-1- хэш-тег начинается с символа # (решётка);
-2- строка после решётки должна состоять из букв и чисел и не может содержать пробелы, спецсимволы (#, @, $ и т. п.), символы пунктуации (тире, дефис, запятая и т. п.), эмодзи и т. д.;
-3- хеш-тег не может состоять только из одной решётки;
-4- максимальная длина одного хэш-тега 20 символов, включая решётку;
-5- хэш-теги нечувствительны к регистру: #ХэшТег и #хэштег считаются одним и тем же тегом;
-6- хэш-теги разделяются пробелами;
-7- один и тот же хэш-тег не может быть использован дважды;
-8- нельзя указать больше 5 хэш-тегов;
-
-хэш-теги необязательны;
-если фокус находится в поле ввода хэш-тега, нажатие на Esc не должно приводить к закрытию формы редактирования изображения.
-*/
-
-
-//валидация комментария
-description.addEventListener('input', () => {
-  if (checkStringLength(description.value, MAX_COMMENT_LENGTH)) {
-    description.setCustomValidity('Еще ' + (MAX_COMMENT_LENGTH - description.value.length) + ' символов');
-  } else {
-    description.setCustomValidity(''); //сбросить ошибку
-  }
-  description.reportValidity(); //проверяет валидность поля на каждый ввод символа
-});
-
-openModal()
