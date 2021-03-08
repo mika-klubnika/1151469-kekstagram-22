@@ -109,6 +109,7 @@ const openModal = () => {
 
   document.addEventListener('keydown', onModalEscKeydown);
   close.addEventListener('click', onModalCloseClick);
+
 };
 
 const closeModal = () => {
@@ -123,8 +124,7 @@ const closeModal = () => {
   close.removeEventListener('click', onModalCloseClick);
 };
 
-downloadButton.addEventListener('change', (evt) => {
-  evt.preventDefault();
+downloadButton.addEventListener('change', () => {
   openModal();
 });
 

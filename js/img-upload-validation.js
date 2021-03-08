@@ -43,7 +43,7 @@ const onHashtagsValidation = (evt) => {
 
 //Валидация комментария
 const onCommentValidation = () => {
-  if (!checkStringLength(description.value, MAX_COMMENT_LENGTH)) {
+  if (checkStringLength(description.value, MAX_COMMENT_LENGTH)) {
     description.setCustomValidity('Можно ввести еще ' + (MAX_COMMENT_LENGTH - description.value.length) + ' символов');
   } else {
     description.setCustomValidity('');
