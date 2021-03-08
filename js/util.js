@@ -75,5 +75,6 @@ export {
   getCommentsIds,
   getRandomNumbers,
   isEscEvent,
-  renderNodeList
+  renderNodeList,
+  checkStringLength
 };

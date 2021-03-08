@@ -97,8 +97,7 @@ const onModalEscKeydown = (evt) => {
   }
 };
 
-const onModalCloseClick = (evt) => {
-  evt.preventDefault();
+const onModalCloseClick = () => {
   closeModal();
 };
 
@@ -125,8 +124,7 @@ const closeModal = () => {
   close.removeEventListener('click', onModalCloseClick);
 };
 
-downloadButton.addEventListener('change', (evt) => {
-  evt.preventDefault();
+downloadButton.addEventListener('change', () => {
   openModal();
 });
 
