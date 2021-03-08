@@ -12,6 +12,11 @@ const uploadTextBlock = document.querySelector('.img-upload__text');
 //Валидация хештегов
 const onHashtagsValidation = (evt) => {
   const input = evt.target;
+
+  if(!input.value) {
+    input.setCustomValidity('');
+  }
+
   const arrayHashtagsUnfiltered = input.value.trim().toLowerCase().split(' ').filter(string => string);
   const arrayHashtags = Array.from(new Set(arrayHashtagsUnfiltered));
 
@@ -42,13 +47,18 @@ const onHashtagsValidation = (evt) => {
 };
 
 //Валидация комментария
-const onCommentValidation = () => {
-  if (checkStringLength(description.value, MAX_COMMENT_LENGTH)) {
-    description.setCustomValidity('Можно ввести еще ' + (MAX_COMMENT_LENGTH - description.value.length) + ' символов');
-  } else {
-    description.setCustomValidity('');
+const onCommentValidation = (evt) => {
+  const input = evt.target;
+
+  if(!input.value) {
+    input.setCustomValidity('');
   }
-  description.reportValidity();
+  else if (checkStringLength(input.value, MAX_COMMENT_LENGTH)) {
+    input.setCustomValidity('Можно ввести еще ' + (MAX_COMMENT_LENGTH - input.value.length) + ' символов');
+  } else {
+    input.setCustomValidity('');
+  }
+  input.reportValidity();
 };
 
 //Отмена закрытия по Esc
