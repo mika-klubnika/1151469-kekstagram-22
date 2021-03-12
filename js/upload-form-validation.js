@@ -1,4 +1,4 @@
-import { isEscEvent, checkStringLength } from './util.js'
+import { isEscEvent } from './util.js'
 import {
   MAX_HASHTAG_LENGTH,
   MAX_HASHTAG_COUNT,
@@ -53,8 +53,8 @@ const onCommentValidation = (evt) => {
   if (!input.value) {
     input.setCustomValidity('');
   }
-  else if (checkStringLength(input.value, MAX_COMMENT_LENGTH)) {
-    input.setCustomValidity('Можно ввести еще ' + (MAX_COMMENT_LENGTH - input.value.length) + ' символов');
+  else if (input.value.length > MAX_COMMENT_LENGTH) {
+    input.setCustomValidity(`Максимальный размер комментария ${MAX_COMMENT_LENGTH} символов`);
   }
   else {
     input.setCustomValidity('');
