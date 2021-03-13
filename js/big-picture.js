@@ -1,5 +1,4 @@
 import { isEscEvent, renderNodeList } from './util.js'
-import { renderPhotos } from './picture.js'
 
 const bigPicture = document.querySelector('.big-picture');
 const bigPictureClose = bigPicture.querySelector('.big-picture__cancel');
@@ -58,12 +57,17 @@ const showBigPicture = (picture, photo) => {
   renderNodeList(socialComments, getCommentNodes(photo.comments))
 };
 
-const getPhotoInfo = (id) => renderPhotos.find(photo => photo.id === +id);
+const bigPictureHandler = (pictures) => {
+  const getPhotoInfo = (id) => pictures.find(photo => photo.id === +id);
 
-picturesContainer.addEventListener('click', (evt) => {
-  if (evt.target.className === 'picture__img') {
-    evt.preventDefault();
-    openModal();
-    showBigPicture(evt.target, getPhotoInfo(evt.target.dataset.id))
-  }
-});
+  picturesContainer.addEventListener('click', (evt) => {
+    const target = evt.target;
+    if (target.className === 'picture__img') {
+      evt.preventDefault();
+      openModal();
+      showBigPicture(target, getPhotoInfo(target.dataset.id))
+    }
+  });
+};
+
+export { bigPictureHandler }

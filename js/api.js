@@ -1,8 +1,4 @@
-import {
-  closeModal,
-  showMessageError,
-  showMessageSuccess
-} from './upload-form.js';
+import { closeModal } from './upload-form.js';
 
 const getData = (onSuccess) => {
   fetch('https://22.javascript.pages.academy/kekstagram/data')
@@ -12,7 +8,7 @@ const getData = (onSuccess) => {
     });
 };
 
-const sendData = (onSuccess, body) => {
+const sendData = (messageSuccess, messageError, body) => {
   fetch(
     'https://22.javascript.pages.academy/kekstagram',
     {
@@ -22,16 +18,16 @@ const sendData = (onSuccess, body) => {
   )
     .then((response) => {
       if (response.ok) {
-        onSuccess();
-        showMessageSuccess();
-      } else {
-        showMessageError();
         closeModal();
+        messageSuccess();
+      } else {
+        closeModal();
+        messageError();
       }
     })
     .catch(() => {
-      showMessageError();
       closeModal();
+      messageError();
     });
 };
 

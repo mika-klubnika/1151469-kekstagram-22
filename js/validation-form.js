@@ -82,3 +82,5 @@ uploadTextBlock.addEventListener('blur', () => {
   description.removeEventListener('input', onCommentValidation);
   hashtags.removeEventListener('input', onHashtagsValidation);
 }, { capture: true });
+
+export { uploadTextBlock }

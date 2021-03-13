@@ -1,16 +1,11 @@
 /* global noUiSlider:readonly */
 import { isEscEvent } from './util.js'
-import { sendData } from './api.js';
+import { uploadTextBlock } from './validation-form.js'
 import {
   STEP_SIZE_PHOTO,
   MIN_PHOTO_SIZE,
   MAX_PHOTO_SIZE
 } from './constants.js';
-
-const uploadForm = document.querySelector('.img-upload__form');
-const main = document.querySelector('main');
-const templateMessageSuccess = document.querySelector('#success').content;
-const templateMessageError = document.querySelector('#error').content;
 
 const imgEdit = document.querySelector('.img-upload__overlay');
 const close = document.querySelector('#upload-cancel');
@@ -125,11 +120,12 @@ const closeModal = () => {
   photoPreview.style = {};
   photoPreview.className = '';
   photoSize = 100;
+  [...uploadTextBlock.children].forEach(input => input.value = '');
 
   document.removeEventListener('keydown', onModalEscKeydown);
   close.removeEventListener('click', onModalCloseClick);
 };
-//change
+
 downloadButton.addEventListener('change', (evt) => {
   evt.preventDefault();
   openModal();
@@ -210,98 +206,4 @@ effectList.addEventListener('click', (evt) => {
   }
 });
 
-//Сообщение об успехе
-const showMessageSuccess = () => {
-  const element = templateMessageSuccess.cloneNode(true);
-  main.appendChild(element);
-
-  const onCloseKeydown = (evt) => {
-    if (isEscEvent(evt)) {
-      evt.preventDefault();
-      closeMessageSuccess(evt.target.className);
-    }
-  };
-
-  const onCloseClick = (evt) => {
-    closeMessageSuccess(evt.target.className);
-  };
-
-  const closeMessageSuccess = () => {
-    main.querySelector('.success').remove();
-    main.removeEventListener('click', onCloseClick);
-    document.removeEventListener('keydown', onCloseKeydown);
-  };
-
-  main.addEventListener('click', onCloseClick);
-  document.addEventListener('keydown', onCloseKeydown);
-};
-
-//Сообщение об ошибке
-const showMessageError = () => {
-  const element = templateMessageError.cloneNode(true);
-  main.appendChild(element);
-
-  const onCloseKeydown = (evt) => {
-    if (isEscEvent(evt)) {
-      evt.preventDefault();
-      closeMessageError(evt.target.className);
-    }
-  };
-
-  const onCloseClick = (evt) => {
-    closeMessageError(evt.target.className);
-  };
-
-  const closeMessageError = () => {
-    main.querySelector('.error').remove();
-    main.removeEventListener('click', onCloseClick);
-    document.removeEventListener('keydown', onCloseKeydown);
-  };
-
-  main.addEventListener('click', onCloseClick);
-  document.addEventListener('keydown', onCloseKeydown);
-};
-
-//Отправка формы
-const setFormSubmit = (onSuccess) => {
-  uploadForm.addEventListener('submit', (evt) => {
-    evt.preventDefault();
-
-    sendData(
-      () => onSuccess(),
-      () => showMessageError(),
-      new FormData(evt.target),
-    );
-
-    // уберу после консультации
-
-    // const formData = new FormData(evt.target);
-    // fetch(
-    //   'https://22.javascript.pages.academy/kekstagram',
-    //   {
-    //     method: 'POST',
-    //     body: formData,
-    //   },
-    // )
-    //   .then((response) => {
-    //     if (response.ok) {
-    //       onSuccess();
-    //       showMessageSuccess();
-    //     } else {
-    //       showMessageError();
-    //       closeModal();
-    //     }
-    //   })
-    //   .catch(() => {
-    //     showMessageError();
-    //     closeModal();
-    //   });
-  });
-};
-
-export {
-  setFormSubmit,
-  closeModal,
-  showMessageError,
-  showMessageSuccess
-}
+export { closeModal }
