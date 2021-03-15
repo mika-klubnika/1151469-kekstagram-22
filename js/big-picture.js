@@ -57,7 +57,7 @@ const showBigPicture = (picture, photo) => {
   renderNodeList(socialComments, getCommentNodes(photo.comments))
 };
 
-const bigPictureHandler = (pictures) => {
+const getBigPicture = (pictures) => {
   const getPhotoInfo = (id) => pictures.find(photo => photo.id === +id);
 
   picturesContainer.addEventListener('click', (evt) => {
@@ -70,4 +70,4 @@ const bigPictureHandler = (pictures) => {
   });
 };
 
-export { bigPictureHandler }
+export { getBigPicture }

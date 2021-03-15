@@ -3,49 +3,53 @@ import { isEscEvent } from './util.js'
 
 const uploadForm = document.querySelector('.img-upload__form');
 const main = document.querySelector('main');
-const templateMessageSuccess = document.querySelector('#success').content.cloneNode(true);
-const templateMessageError = document.querySelector('#error').content.cloneNode(true);
 
-const addMessageElement = node => main.appendChild(node);
+const MessagesBlockKeys = {
+  SUCCESS: 'success',
+  ERROR: 'error',
+}
 
-const onCloseMessage = (className) => {
+const addMessageElement = id => {
+  const node = document.querySelector(`#${id}`).content.cloneNode(true)
+  main.appendChild(node)
+};
+
+const onCloseMessage = (key) => {
+  const className = `.${key}`;
+  const messageBlock = main.querySelector(className);
+
   const closeMessage = () => {
-    main.querySelector(className).remove();
-    main.removeEventListener('click', onCloseClick);
+    messageBlock.remove();
     document.removeEventListener('keydown', onCloseKeydown);
   };
 
   const onCloseKeydown = (evt) => {
     if (isEscEvent(evt)) {
-      evt.preventDefault();
       closeMessage(evt.target.className);
     }
   };
 
   const onCloseClick = (evt) => {
-    closeMessage(evt.target.className);
+    const target = evt.target;
+    if (target.classList.contains(key) || target.classList.contains(`${key}__button`)) {
+      closeMessage(target.className);
+    }
   };
 
-  main.addEventListener('click', onCloseClick);
+  messageBlock.addEventListener('click', onCloseClick);
   document.addEventListener('keydown', onCloseKeydown);
 };
 
-const onShowMessage = (element, className) => {
-  addMessageElement(element);
-  onCloseMessage(className);
+const showMessage = (key) => {
+  addMessageElement(key);
+  onCloseMessage(key);
 }
 
 //Сообщение об успехе
-const showMessageSuccess = () => onShowMessage(
-  templateMessageSuccess,
-  '.success',
-);
+const showMessageSuccess = () => showMessage(MessagesBlockKeys.SUCCESS);
 
 //Сообщение об ошибке
-const showMessageError = () => onShowMessage(
-  templateMessageError,
-  '.error',
-);
+const showMessageError = () => showMessage(MessagesBlockKeys.ERROR);
 
 //Отправка формы
 const setFormSubmit = () => {
@@ -60,4 +64,4 @@ const setFormSubmit = () => {
   });
 };
 
-export { setFormSubmit }
+export { setFormSubmit, uploadForm }
