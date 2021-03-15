@@ -1,5 +1,6 @@
 /* global noUiSlider:readonly */
 import { isEscEvent } from './util.js'
+import {uploadForm} from './sending-form.js'
 import {
   STEP_SIZE_PHOTO,
   MIN_PHOTO_SIZE,
@@ -89,6 +90,18 @@ const SLIDER_OPTIONS = {
   },
 };
 
+//восстанавливает форму по умолчанию
+const restoreDefault = () => {
+  const inputs = [...uploadForm.querySelectorAll('.input-invalid')]
+
+  photoPreview.style = {};
+  photoPreview.className = '';
+  photoSize = 100;
+
+  inputs.forEach(input => input.classList.remove('input-invalid'))
+  uploadForm.reset();
+};
+
 //Открыть/Закрыть форму редактирования
 const onModalEscKeydown = (evt) => {
   if (isEscEvent(evt)) {
@@ -116,15 +129,14 @@ const closeModal = () => {
   imgEdit.classList.add('hidden');
   document.body.classList.remove('modal-open');
 
-  photoPreview.style = {};
-  photoPreview.className = '';
-  photoSize = 100;
+  restoreDefault();
 
   document.removeEventListener('keydown', onModalEscKeydown);
   close.removeEventListener('click', onModalCloseClick);
 };
 
-downloadButton.addEventListener('change', () => {
+downloadButton.addEventListener('change', (evt) => {
+  evt.preventDefault();
   openModal();
 });
 
@@ -202,3 +214,5 @@ effectList.addEventListener('click', (evt) => {
     })
   }
 });
+
+export { closeModal }

@@ -710,6 +710,9 @@ main {
   border-radius: 5px;
 }
 
+.input-invalid:invalid {
+  border: 2px solid #ff0000;
+}
 
 /**
  * Кнопка для отправки изображения

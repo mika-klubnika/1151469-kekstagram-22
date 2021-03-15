@@ -1,4 +1,4 @@
-import { isEscEvent, checkStringLength } from './util.js'
+import { isEscEvent } from './util.js'
 import {
   MAX_HASHTAG_LENGTH,
   MAX_HASHTAG_COUNT,
@@ -9,9 +9,17 @@ const hashtags = document.querySelector('.text__hashtags');
 const description = document.querySelector('.text__description');
 const uploadTextBlock = document.querySelector('.img-upload__text');
 
+//Отмена закрытия по Esc
+const onCancelEscKeydown = (evt) => {
+  if (isEscEvent(evt)) {
+    evt.stopPropagation();
+  }
+};
+
 //Валидация хештегов
 const onHashtagsValidation = (evt) => {
   const input = evt.target;
+  input.classList.add('input-invalid');
 
   if (!input.value) {
     input.setCustomValidity('');
@@ -39,6 +47,7 @@ const onHashtagsValidation = (evt) => {
       }
       else {
         input.setCustomValidity('');
+        input.classList.remove('input-invalid');
       }
     })
   }
@@ -49,25 +58,20 @@ const onHashtagsValidation = (evt) => {
 //Валидация комментария
 const onCommentValidation = (evt) => {
   const input = evt.target;
+  input.classList.add('input-invalid');
 
   if (!input.value) {
     input.setCustomValidity('');
   }
-  else if (checkStringLength(input.value, MAX_COMMENT_LENGTH)) {
-    input.setCustomValidity('Можно ввести еще ' + (MAX_COMMENT_LENGTH - input.value.length) + ' символов');
+  else if (input.value.length > MAX_COMMENT_LENGTH) {
+    input.setCustomValidity(`Максимальный размер комментария ${MAX_COMMENT_LENGTH} символов`);
   }
   else {
     input.setCustomValidity('');
+    input.classList.remove('input-invalid')
   }
 
   input.reportValidity();
-};
-
-//Отмена закрытия по Esc
-const onCancelEscKeydown = (evt) => {
-  if (isEscEvent(evt)) {
-    evt.stopPropagation();
-  }
 };
 
 //Обработчики
@@ -75,10 +79,12 @@ uploadTextBlock.addEventListener('focus', () => {
   document.body.addEventListener('keydown', onCancelEscKeydown);
   description.addEventListener('input', onCommentValidation);
   hashtags.addEventListener('input', onHashtagsValidation);
-}, { capture: true });
+}, true);
 
 uploadTextBlock.addEventListener('blur', () => {
   document.body.removeEventListener('keydown', onCancelEscKeydown);
   description.removeEventListener('input', onCommentValidation);
   hashtags.removeEventListener('input', onHashtagsValidation);
-}, { capture: true });
+}, true);
+
+export { uploadTextBlock }
