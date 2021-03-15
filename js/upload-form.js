@@ -1,6 +1,6 @@
 /* global noUiSlider:readonly */
 import { isEscEvent } from './util.js'
-import { uploadTextBlock } from './validation-form.js'
+import {uploadForm} from './sending-form.js'
 import {
   STEP_SIZE_PHOTO,
   MIN_PHOTO_SIZE,
@@ -90,6 +90,13 @@ const SLIDER_OPTIONS = {
   },
 };
 
+//восстанавливает  по умолчанию
+const restoreDefault = () => {
+  photoPreview.style = {};
+  photoPreview.className = '';
+  photoSize = 100;
+};
+
 //Открыть/Закрыть форму редактирования
 const onModalEscKeydown = (evt) => {
   if (isEscEvent(evt)) {
@@ -117,10 +124,8 @@ const closeModal = () => {
   imgEdit.classList.add('hidden');
   document.body.classList.remove('modal-open');
 
-  photoPreview.style = {};
-  photoPreview.className = '';
-  photoSize = 100;
-  [...uploadTextBlock.children].forEach(input => input.value = '');
+  restoreDefault();
+  uploadForm.reset();
 
   document.removeEventListener('keydown', onModalEscKeydown);
   close.removeEventListener('click', onModalCloseClick);

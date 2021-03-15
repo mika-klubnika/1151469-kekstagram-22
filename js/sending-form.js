@@ -30,19 +30,19 @@ const onCloseMessage = (className) => {
   document.addEventListener('keydown', onCloseKeydown);
 };
 
-const onShowMessage = (element, className) => {
+const showMessage = (element, className) => {
   addMessageElement(element);
   onCloseMessage(className);
 }
 
 //Сообщение об успехе
-const showMessageSuccess = () => onShowMessage(
+const showMessageSuccess = () => showMessage(
   templateMessageSuccess,
   '.success',
 );
 
 //Сообщение об ошибке
-const showMessageError = () => onShowMessage(
+const showMessageError = () => showMessage(
   templateMessageError,
   '.error',
 );
@@ -60,4 +60,4 @@ const setFormSubmit = () => {
   });
 };
 
-export { setFormSubmit }
+export { setFormSubmit, uploadForm }

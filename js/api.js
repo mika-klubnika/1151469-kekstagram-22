@@ -8,7 +8,7 @@ const getData = (onSuccess) => {
     });
 };
 
-const sendData = (messageSuccess, messageError, body) => {
+const sendData = (onMessageSuccess, onMessageError, body) => {
   fetch(
     'https://22.javascript.pages.academy/kekstagram',
     {
@@ -19,15 +19,15 @@ const sendData = (messageSuccess, messageError, body) => {
     .then((response) => {
       if (response.ok) {
         closeModal();
-        messageSuccess();
+        onMessageSuccess();
       } else {
         closeModal();
-        messageError();
+        onMessageError();
       }
     })
     .catch(() => {
       closeModal();
-      messageError();
+      onMessageError();
     });
 };
 
