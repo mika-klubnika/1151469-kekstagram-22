@@ -90,11 +90,16 @@ const SLIDER_OPTIONS = {
   },
 };
 
-//восстанавливает  по умолчанию
+//восстанавливает форму по умолчанию
 const restoreDefault = () => {
+  const inputs = [...uploadForm.querySelectorAll('.input-invalid')]
+
   photoPreview.style = {};
   photoPreview.className = '';
   photoSize = 100;
+
+  inputs.forEach(input => input.classList.remove('input-invalid'))
+  uploadForm.reset();
 };
 
 //Открыть/Закрыть форму редактирования
@@ -125,7 +130,6 @@ const closeModal = () => {
   document.body.classList.remove('modal-open');
 
   restoreDefault();
-  uploadForm.reset();
 
   document.removeEventListener('keydown', onModalEscKeydown);
   close.removeEventListener('click', onModalCloseClick);

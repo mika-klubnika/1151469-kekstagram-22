@@ -696,14 +696,6 @@ main {
   border-radius: 5px;
 }
 
-.text__hashtags:invalid {
-  border: 2px solid #ff0000;
-}
-
-.text__hashtags:valid {
-  border: 2px solid transparent;
-}
-
 .text__description {
   width: 450px;
   height: 100px;
@@ -718,12 +710,8 @@ main {
   border-radius: 5px;
 }
 
-.text__description:invalid {
+.input-invalid:invalid {
   border: 2px solid #ff0000;
-}
-
-.text__description:valid {
-  border: 2px solid transparent;
 }
 
 /**
