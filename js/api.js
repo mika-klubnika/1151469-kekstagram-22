@@ -1,14 +1,13 @@
 import { closeModal } from './upload-form.js';
-import { filters } from './filters.js'
 
+let img = [];
 
 const getData = (onSuccess) => {
   fetch('https://22.javascript.pages.academy/kekstagram/data')
     .then((response) => response.json())
     .then((picture) => {
-      console.log("🚀 ~ file: api.js ~ line 9 ~ .then ~ picture", picture)
       onSuccess(picture);
-      filters.classList.remove('img-filters--inactive');
+      img = picture;
     });
 };
 
@@ -35,4 +34,4 @@ const sendData = (onMessageSuccess, onMessageError, body) => {
     });
 };
 
-export { getData, sendData }
+export { getData, sendData, img }
