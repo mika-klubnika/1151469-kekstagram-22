@@ -1,3 +1,4 @@
+/* global _:readonly */
 import { isEscEvent } from './util.js'
 import {
   MAX_HASHTAG_LENGTH,
@@ -9,6 +10,8 @@ const hashtags = document.querySelector('.text__hashtags');
 const description = document.querySelector('.text__description');
 const uploadTextBlock = document.querySelector('.img-upload__text');
 
+const DELAY = 500;
+
 //Отмена закрытия по Esc
 const onCancelEscKeydown = (evt) => {
   if (isEscEvent(evt)) {
@@ -17,7 +20,7 @@ const onCancelEscKeydown = (evt) => {
 };
 
 //Валидация хештегов
-const onHashtagsValidation = (evt) => {
+const onHashtagsValidation = _.debounce((evt) => {
   const input = evt.target;
   input.classList.add('input-invalid');
 
@@ -53,10 +56,10 @@ const onHashtagsValidation = (evt) => {
   }
 
   input.reportValidity();
-};
+}, DELAY);
 
 //Валидация комментария
-const onCommentValidation = (evt) => {
+const onCommentValidation = _.debounce((evt) => {
   const input = evt.target;
   input.classList.add('input-invalid');
 
@@ -72,7 +75,7 @@ const onCommentValidation = (evt) => {
   }
 
   input.reportValidity();
-};
+}, DELAY);
 
 //Обработчики
 uploadTextBlock.addEventListener('focus', () => {

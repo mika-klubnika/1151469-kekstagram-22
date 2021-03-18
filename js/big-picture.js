@@ -6,10 +6,31 @@ const picturesContainer = document.querySelector('.pictures');
 const bigPictureImg = bigPicture.querySelector('.big-picture__img').querySelector('img');
 const likes = bigPicture.querySelector('.likes-count');
 const description = bigPicture.querySelector('.social__caption');
-const commentCount = bigPicture.querySelector('.social__comment-count');
-const loaderComment = bigPicture.querySelector('.comments-loader');
 const socialComments = bigPicture.querySelector('.social__comments');
 const socialComment = bigPicture.querySelector('.social__comment');
+
+
+
+const commentsList = bigPicture.querySelector('.social__comments');
+const commentsTemplate = bigPicture.querySelectorAll('.social__comment').content;
+const blockCommentsCount = bigPicture.querySelector('.social__comment-count'); //div
+const commentsCount = bigPicture.querySelector('.comments-count'); //сколько всего комментов
+const buttonMoreComments = bigPicture.querySelector('.comments-loader'); //Загрузить еще
+let comments;
+
+
+const showMoreComments = () => {
+  if (comments > 5) {
+    blockCommentsCount.classList.remove('hidden');
+    buttonMoreComments.classList.remove('hidden');
+  } else {
+    blockCommentsCount.classList.add('hidden');
+    buttonMoreComments.classList.add('hidden');
+  }
+};
+
+
+
 
 const onModalEscKeydown = (evt) => {
   if (isEscEvent(evt)) {
@@ -26,8 +47,8 @@ const onModalCloseClick = (evt) => {
 const openModal = () => {
   bigPicture.classList.remove('hidden');
   document.body.classList.add('modal-open');
-  commentCount.classList.add('hidden');
-  loaderComment.classList.add('hidden');
+  // blockCommentsCount.classList.add('hidden');
+  // buttonMoreComments.classList.add('hidden');
 
   document.addEventListener('keydown', onModalEscKeydown);
   bigPictureClose.addEventListener('click', onModalCloseClick);
@@ -49,12 +70,13 @@ const getCommentNodes = (comments = []) => comments.map(comment => {
   return node;
 });
 
-
 const showBigPicture = (picture, photo) => {
   bigPictureImg.src = picture.src;
   likes.textContent = photo.likes;
   description.textContent = photo.description;
   renderNodeList(socialComments, getCommentNodes(photo.comments))
+  comments = photo.comments.length;
+  showMoreComments(comments);
 };
 
 const getBigPicture = (pictures) => {
