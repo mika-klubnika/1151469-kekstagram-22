@@ -16,11 +16,12 @@ const commentsTemplate = bigPicture.querySelectorAll('.social__comment').content
 const blockCommentsCount = bigPicture.querySelector('.social__comment-count'); //div
 const commentsCount = bigPicture.querySelector('.comments-count'); //сколько всего комментов
 const buttonMoreComments = bigPicture.querySelector('.comments-loader'); //Загрузить еще
+const VISIBLE_COMMENTS = 5;
 let comments;
 
 
 const showMoreComments = () => {
-  if (comments > 5) {
+  if (comments > VISIBLE_COMMENTS) {
     blockCommentsCount.classList.remove('hidden');
     buttonMoreComments.classList.remove('hidden');
   } else {

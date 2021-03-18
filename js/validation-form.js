@@ -10,7 +10,7 @@ const hashtags = document.querySelector('.text__hashtags');
 const description = document.querySelector('.text__description');
 const uploadTextBlock = document.querySelector('.img-upload__text');
 
-const DELAY = 500;
+const DEBOUNCE = 500;
 
 //Отмена закрытия по Esc
 const onCancelEscKeydown = (evt) => {
@@ -56,7 +56,7 @@ const onHashtagsValidation = _.debounce((evt) => {
   }
 
   input.reportValidity();
-}, DELAY);
+}, DEBOUNCE);
 
 //Валидация комментария
 const onCommentValidation = _.debounce((evt) => {
@@ -75,7 +75,7 @@ const onCommentValidation = _.debounce((evt) => {
   }
 
   input.reportValidity();
-}, DELAY);
+}, DEBOUNCE);
 
 //Обработчики
 uploadTextBlock.addEventListener('focus', () => {

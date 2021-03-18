@@ -1,13 +1,10 @@
 import { closeModal } from './upload-form.js';
 
-let img = [];
-
 const getData = (onSuccess) => {
   fetch('https://22.javascript.pages.academy/kekstagram/data')
     .then((response) => response.json())
     .then((picture) => {
       onSuccess(picture);
-      img = picture;
     });
 };
 
@@ -34,4 +31,4 @@ const sendData = (onMessageSuccess, onMessageError, body) => {
     });
 };
 
-export { getData, sendData, img }
+export { getData, sendData }
