@@ -1,7 +1,7 @@
 const otherPhotos = document.querySelector('.pictures');
 const pictureTemplate = document.querySelector('#picture').content;
 
-const renderPhotos = (photos) => {
+const getPreviewPhotos = (photos) => {
 
   const pictureListFragment = document.createDocumentFragment();
 
@@ -16,4 +16,5 @@ const renderPhotos = (photos) => {
 
   otherPhotos.appendChild(pictureListFragment);
 };
-export { renderPhotos };
+
+export { getPreviewPhotos };
