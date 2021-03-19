@@ -1,50 +1,65 @@
-import { getData, img } from './api.js';
+/* global _:readonly */
+import { getPreviewPhotos } from './picture.js';
+import { getBigPicture } from './big-picture.js';
+import { DELAY } from './constants.js';
+import {
+  getMixedPictures,
+  sortPictureByCommented
+} from './util.js';
 
 const filtersContainer = document.querySelector('.img-filters');
-const filterDefault = document.querySelector('#filter-default'); //По умолчанию
-const filterRandom = document.querySelector('#filter-random'); //Случайные
-const filterDiscussed = document.querySelector('#filter-discussed'); //Обсуждаемые
-const buttons = document.querySelectorAll('.img-filters__button');
-// const DEBOUNCE = 500;
+const filtersForm = filtersContainer.querySelector('.img-filters__form');
+
+const removePicture = () => document.querySelectorAll('.picture').forEach(element => element.remove());
 
 const getButtons = (evt) => {
   const target = evt.target;
-  const activeFilter = document.querySelector('.img-filters__button--active');
+  const activeButton = document.querySelector('.img-filters__button--active');
 
-  if (activeFilter) {
-    activeFilter.classList.remove('img-filters__button--active');
+  if (activeButton !== target) {
+    activeButton.classList.remove('img-filters__button--active');
+    target.classList.add('img-filters__button--active');
   }
-  target.classList.add('img-filters__button--active');
 };
 
-buttons.forEach(button => {
-  button.addEventListener('click', getButtons)
-});
+const createOnClick = (pictures) => _.throttle((evt) => {
+  const targetId = evt.target.id;
 
-//Default
-filterDefault.addEventListener('click', () => {
-  img;
-  console.log("🚀 ~ file: filters.js ~ line 29 ~ filterDefault.addEventListener ~ aa", img)
-});
+  const newSet = new Set(pictures);
+  const arrayOfSet = [...newSet];
 
-//Random
-filterRandom.addEventListener('click', () => {
-  const mixedPictures = img.sort(() => Math.random() - 0.5).slice(0, 10);
-  console.log("🚀 ~ file: filters.js ~ line 39 ~ ", mixedPictures);
-});
+  switch (targetId) {
+    case 'filter-random':
+      removePicture()
+      getPreviewPhotos(getMixedPictures(arrayOfSet));
+      getBigPicture(arrayOfSet);
+      break;
+    case 'filter-discussed':
+      removePicture()
+      getPreviewPhotos((arrayOfSet).sort(sortPictureByCommented));
+      getBigPicture(arrayOfSet);
+      break;
+    default:
+      removePicture()
+      getPreviewPhotos(arrayOfSet);
+      getBigPicture(arrayOfSet);
+  }
+}, DELAY);
 
-//Discussed
-const sortPictureByCommented = (pictureA, pictureB) => {
-  const commentA = pictureA.comments.length;
-  const commentB = pictureB.comments.length;
-  return commentB - commentA;
-}
+const getPictureForFilters = (pictures) => {
+  const onClick = createOnClick(pictures);
 
-filterDiscussed.addEventListener('click', () => {
-  const popularPictures = img.sort(sortPictureByCommented)
-  console.log("🚀 ~ file: filters.js ~ line 51 ~ ", popularPictures)
-});
+  const onFiltersContainerFocus = () => {
+    filtersForm.addEventListener('click', onClick, true);
+  }
 
+  const onFiltersContainerBlur = () => {
+    filtersForm.removeEventListener('click', onClick, true);
+  }
 
+  filtersContainer.addEventListener('focus', onFiltersContainerFocus, true);
+  filtersContainer.addEventListener('blur', onFiltersContainerBlur, true);
+  filtersContainer.addEventListener('click', getButtons);
+};
 
-export { filtersContainer }
+export { filtersContainer, getPictureForFilters }
