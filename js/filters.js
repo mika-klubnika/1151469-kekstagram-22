@@ -11,7 +11,7 @@ const filterDiscussed = document.querySelector('#filter-discussed'); //Обсу�
 const buttons = document.querySelectorAll('.img-filters__button');
 const DEBOUNCE = 500;
 
-const removePicture = () => document.querySelectorAll('.picture').forEach(element => {element.remove()});
+const removePicture = () => document.querySelectorAll('.picture').forEach(element => { element.remove() });
 
 const getButtons = (evt) => {
   const target = evt.target;
@@ -23,7 +23,7 @@ const getButtons = (evt) => {
   target.classList.add('img-filters__button--active');
 };
 
-buttons.forEach(button => {button.addEventListener('click', getButtons)});
+buttons.forEach(button => { button.addEventListener('click', getButtons) });
 
 //Default
 filterDefault.addEventListener('click', _.debounce(() => {
