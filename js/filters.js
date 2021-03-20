@@ -16,9 +16,13 @@ const getButtons = (evt) => {
   const target = evt.target;
   const activeButton = document.querySelector('.img-filters__button--active');
 
-  if (activeButton !== target) {
-    activeButton.classList.remove('img-filters__button--active');
-    target.classList.add('img-filters__button--active');
+  if (target.className === 'img-filters__button') {
+    if (activeButton !== target) {
+      activeButton.classList.remove('img-filters__button--active');
+      target.classList.add('img-filters__button--active');
+    }
+  } else {
+    return;
   }
 };
 
