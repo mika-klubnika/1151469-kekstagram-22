@@ -1,12 +1,15 @@
-import { renderPhotos } from './picture.js';
+import { getPreviewPhotos } from './picture.js';
 import { getBigPicture } from './big-picture.js';
 import { setFormSubmit } from './sending-form.js'
 import './validation-form.js';
 import { getData } from './api.js';
+import { filtersContainer, getPictureForFilters } from './filters.js'
 
 getData((pictures) => {
-  renderPhotos(pictures);
+  getPreviewPhotos(pictures);
   getBigPicture(pictures);
+  getPictureForFilters(pictures);
+  filtersContainer.classList.remove('img-filters--inactive');
 });
 
 setFormSubmit();
