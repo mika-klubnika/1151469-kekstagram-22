@@ -14,24 +14,47 @@ const socialComment = bigPicture.querySelector('.social__comment');
 const commentsList = bigPicture.querySelector('.social__comments');
 const commentsTemplate = bigPicture.querySelectorAll('.social__comment').content;
 const blockCommentsCount = bigPicture.querySelector('.social__comment-count'); //div
+let commentsCountOpen = bigPicture.querySelector('.comments-count-open');
+
 const commentsCount = bigPicture.querySelector('.comments-count'); //сколько всего комментов
-const buttonMoreComments = bigPicture.querySelector('.comments-loader'); //Загрузить еще
+const moreCommentsButton = bigPicture.querySelector('.comments-loader'); //Загрузить еще
 const VISIBLE_COMMENTS = 5;
 let comments;
 
 
-const showMoreComments = () => {
-  if (comments > VISIBLE_COMMENTS) {
-    blockCommentsCount.classList.remove('hidden');
-    buttonMoreComments.classList.remove('hidden');
-  } else {
-    blockCommentsCount.classList.add('hidden');
-    buttonMoreComments.classList.add('hidden');
+
+// const quack = (comments) => {
+//   for (let i = 0; i < comments.length; i++) {
+//     if (comments.length <= 5) {
+//       console.log('1')
+//       moreCommentsButton.classList.add('hidden');
+//     }
+//     else if (comments[i] >= comments.length) {
+//       console.log('2')
+//       moreCommentsButton.classList.add('hidden');
+//     }
+//     else {
+//       console.log('3')
+//       moreCommentsButton.classList.remove('hidden');
+//     }
+//   }
+// }
+
+const createShowMoreComments = (index) => {
+  let indexOfHidden = index;
+  let hiddenComments;
+
+  return () => {
+    hiddenComments = comments.slice(indexOfHidden, indexOfHidden + VISIBLE_COMMENTS);
+
+    hiddenComments.forEach(comment => {
+      comment.classList.remove('hidden');
+    })
+    indexOfHidden += VISIBLE_COMMENTS;
   }
 };
 
-
-
+const showMoreComments = createShowMoreComments(VISIBLE_COMMENTS);
 
 const onModalEscKeydown = (evt) => {
   if (isEscEvent(evt)) {
@@ -48,11 +71,10 @@ const onModalCloseClick = (evt) => {
 const openModal = () => {
   bigPicture.classList.remove('hidden');
   document.body.classList.add('modal-open');
-  // blockCommentsCount.classList.add('hidden');
-  // buttonMoreComments.classList.add('hidden');
 
   document.addEventListener('keydown', onModalEscKeydown);
   bigPictureClose.addEventListener('click', onModalCloseClick);
+  moreCommentsButton.addEventListener('click', showMoreComments);
 };
 
 const closeModal = () => {
@@ -61,13 +83,17 @@ const closeModal = () => {
 
   document.removeEventListener('keydown', onModalEscKeydown);
   bigPictureClose.removeEventListener('click', onModalCloseClick);
+  moreCommentsButton.removeEventListener('click', showMoreComments);
 };
 
-const getCommentNodes = (comments = []) => comments.map(comment => {
+const getCommentNodes = (comments = []) => comments.map((comment, index) => {
   const node = socialComment.cloneNode(true);
   node.querySelector('img').src = comment.avatar;
   node.querySelector('img').alt = comment.name;
   node.querySelector('p').textContent = comment.message;
+  if (index > VISIBLE_COMMENTS - 1) {
+    node.classList.add('hidden');
+  }
   return node;
 });
 
@@ -75,9 +101,11 @@ const showBigPicture = (picture, photo) => {
   bigPictureImg.src = picture.src;
   likes.textContent = photo.likes;
   description.textContent = photo.description;
-  renderNodeList(socialComments, getCommentNodes(photo.comments))
-  comments = photo.comments.length;
-  showMoreComments(comments);
+  comments = getCommentNodes(photo.comments);
+  renderNodeList(socialComments, comments);
+  commentsCount.textContent = comments.length;
+
+  // quack(comments)
 };
 
 const getBigPicture = (pictures) => {

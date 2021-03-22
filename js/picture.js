@@ -1,4 +1,4 @@
-const otherPhotos = document.querySelector('.pictures');
+const pictures = document.querySelector('.pictures');
 const pictureTemplate = document.querySelector('#picture').content;
 
 const getPreviewPhotos = (photos) => {
@@ -14,7 +14,7 @@ const getPreviewPhotos = (photos) => {
     pictureListFragment.appendChild(photoElement);
   });
 
-  otherPhotos.appendChild(pictureListFragment);
+  pictures.appendChild(pictureListFragment);
 };
 
-export { getPreviewPhotos };
+export { getPreviewPhotos, pictures };

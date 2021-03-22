@@ -1,67 +1,68 @@
 /* global _:readonly */
-import { getData } from './api.js';
 import { getPreviewPhotos } from './picture.js';
 import { getBigPicture } from './big-picture.js';
-
+import { DELAY } from './constants.js';
+import {
+  getMixedPictures,
+  sortPictureByCommented
+} from './util.js';
 
 const filtersContainer = document.querySelector('.img-filters');
-const filterDefault = document.querySelector('#filter-default'); //По умолчанию
-const filterRandom = document.querySelector('#filter-random'); //Случайные
-const filterDiscussed = document.querySelector('#filter-discussed'); //Обсуждаемые
-const buttons = document.querySelectorAll('.img-filters__button');
-const DEBOUNCE = 500;
+const filtersForm = filtersContainer.querySelector('.img-filters__form');
 
-const removePicture = () => document.querySelectorAll('.picture').forEach(element => { element.remove() });
+const removePicture = () => document.querySelectorAll('.picture').forEach(element => element.remove());
 
 const getButtons = (evt) => {
   const target = evt.target;
   const activeButton = document.querySelector('.img-filters__button--active');
 
-  if (activeButton) {
-    activeButton.classList.remove('img-filters__button--active');
+  if (target.className === 'img-filters__button') {
+    if (activeButton !== target) {
+      activeButton.classList.remove('img-filters__button--active');
+      target.classList.add('img-filters__button--active');
+    }
+  } else {
+    return;
   }
-  target.classList.add('img-filters__button--active');
 };
 
-buttons.forEach(button => { button.addEventListener('click', getButtons) });
+const createOnClick = (pictures) => _.throttle((evt) => {
+  const targetId = evt.target.id;
 
-//Default
-filterDefault.addEventListener('click', _.debounce(() => {
-  removePicture()
+  const newSet = new Set(pictures);
+  const arrayOfSet = [...newSet];
 
-  getData((picture) => {
-    getPreviewPhotos(picture);
-    getBigPicture(picture);
-  });
-}, DEBOUNCE));
+  removePicture();
 
-//Random
-const getMixedPictures = (picture) => picture.sort(() => Math.random() - 0.5).slice(0, 10);
+  switch (targetId) {
+    case 'filter-random':
+      getPreviewPhotos(getMixedPictures(arrayOfSet));
+      getBigPicture(arrayOfSet);
+      break;
+    case 'filter-discussed':
+      getPreviewPhotos((arrayOfSet).sort(sortPictureByCommented));
+      getBigPicture(arrayOfSet);
+      break;
+    default:
+      getPreviewPhotos(arrayOfSet);
+      getBigPicture(arrayOfSet);
+  }
+}, DELAY);
 
-filterRandom.addEventListener('click', _.debounce(() => {
-  removePicture()
+const getPictureForFilters = (pictures) => {
+  const onClick = createOnClick(pictures);
 
-  getData((picture) => {
-    getPreviewPhotos(getMixedPictures(picture));
-    getBigPicture(picture);
-  });
-}, DEBOUNCE));
+  const onFiltersContainerFocus = () => {
+    filtersForm.addEventListener('click', onClick, true);
+  }
 
-//Discussed
-const sortPictureByCommented = (pictureA, pictureB) => {
-  const commentA = pictureA.comments.length;
-  const commentB = pictureB.comments.length;
-  return commentB - commentA;
-}
+  const onFiltersContainerBlur = () => {
+    filtersForm.removeEventListener('click', onClick, true);
+  }
 
-filterDiscussed.addEventListener('click', _.debounce(() => {
-  removePicture()
+  filtersContainer.addEventListener('focus', onFiltersContainerFocus, true);
+  filtersContainer.addEventListener('blur', onFiltersContainerBlur, true);
+  filtersContainer.addEventListener('click', getButtons);
+};
 
-  getData((picture) => {
-    getPreviewPhotos((picture).sort(sortPictureByCommented));
-    getBigPicture(picture);
-  });
-}, DEBOUNCE));
-
-
-export { filtersContainer }
+export { filtersContainer, getPictureForFilters }

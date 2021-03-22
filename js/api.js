@@ -3,8 +3,8 @@ import { closeModal } from './upload-form.js';
 const getData = (onSuccess) => {
   fetch('https://22.javascript.pages.academy/kekstagram/data')
     .then((response) => response.json())
-    .then((picture) => {
-      onSuccess(picture);
+    .then((pictures) => {
+      onSuccess(pictures);
     });
 };
 
