@@ -1,5 +1,5 @@
 /* global _:readonly */
-import { isEscEvent } from './util.js'
+import { isEscEvent } from './util.js';
 import {
   MAX_HASHTAG_LENGTH,
   MAX_HASHTAG_COUNT,

@@ -1,5 +1,5 @@
 import { sendData } from './api.js';
-import { isEscEvent } from './util.js'
+import { isEscEvent } from './util.js';
 
 const uploadForm = document.querySelector('.img-upload__form');
 const main = document.querySelector('main');
