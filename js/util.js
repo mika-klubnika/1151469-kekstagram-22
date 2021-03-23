@@ -3,6 +3,22 @@ const isEscEvent = (evt) => {
   return evt.key === ('Escape' || 'Esc');
 };
 
+const createOnModalEscKeydown = (cb) => {
+  return (evt) => {
+    if (isEscEvent(evt)) {
+      evt.preventDefault();
+      cb();
+    }
+  }
+};
+
+const creteOnModalCloseClick = (cb) => {
+  return (evt) => {
+    evt.preventDefault();
+    cb();
+  }
+};
+
 //получем набор node
 const renderNodeList = (parent, nodes = []) => {
   parent.textContent = '';
@@ -21,5 +37,7 @@ export {
   isEscEvent,
   renderNodeList,
   getMixedPictures,
-  sortPictureByCommented
+  sortPictureByCommented,
+  createOnModalEscKeydown,
+  creteOnModalCloseClick
 };

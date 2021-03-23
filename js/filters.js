@@ -32,19 +32,18 @@ const createOnClick = (pictures) => _.throttle((evt) => {
   const newSet = new Set(pictures);
   const arrayOfSet = [...newSet];
 
+  removePicture();
+
   switch (targetId) {
     case 'filter-random':
-      removePicture()
       getPreviewPhotos(getMixedPictures(arrayOfSet));
       getBigPicture(arrayOfSet);
       break;
     case 'filter-discussed':
-      removePicture()
       getPreviewPhotos((arrayOfSet).sort(sortPictureByCommented));
       getBigPicture(arrayOfSet);
       break;
     default:
-      removePicture()
       getPreviewPhotos(arrayOfSet);
       getBigPicture(arrayOfSet);
   }

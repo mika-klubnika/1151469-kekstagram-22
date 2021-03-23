@@ -1,6 +1,9 @@
 /* global noUiSlider:readonly */
-import { isEscEvent } from './util.js'
-import {uploadForm} from './sending-form.js'
+import {
+  createOnModalEscKeydown,
+  creteOnModalCloseClick
+} from './util.js';
+import { uploadForm } from './sending-form.js'
 import {
   STEP_SIZE_PHOTO,
   MIN_PHOTO_SIZE,
@@ -103,17 +106,6 @@ const restoreDefault = () => {
 };
 
 //Открыть/Закрыть форму редактирования
-const onModalEscKeydown = (evt) => {
-  if (isEscEvent(evt)) {
-    evt.preventDefault();
-    closeModal();
-  }
-};
-
-const onModalCloseClick = () => {
-  closeModal();
-};
-
 const openModal = () => {
   effectLevel.classList.add('hidden');
 
@@ -134,6 +126,10 @@ const closeModal = () => {
   document.removeEventListener('keydown', onModalEscKeydown);
   close.removeEventListener('click', onModalCloseClick);
 };
+
+const onModalEscKeydown = createOnModalEscKeydown(closeModal);
+const onModalCloseClick = creteOnModalCloseClick(closeModal);
+
 
 downloadButton.addEventListener('change', (evt) => {
   evt.preventDefault();
