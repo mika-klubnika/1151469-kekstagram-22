@@ -3,14 +3,13 @@ import { isEscEvent } from './util.js';
 import {
   MAX_HASHTAG_LENGTH,
   MAX_HASHTAG_COUNT,
-  MAX_COMMENT_LENGTH
+  MAX_COMMENT_LENGTH,
+  DELAY
 } from './constants.js';
 
 const hashtags = document.querySelector('.text__hashtags');
 const description = document.querySelector('.text__description');
 const uploadTextBlock = document.querySelector('.img-upload__text');
-
-const DEBOUNCE = 500;
 
 //Отмена закрытия по Esc
 const onCancelEscKeydown = (evt) => {
@@ -56,7 +55,7 @@ const onHashtagsValidation = _.debounce((evt) => {
   }
 
   input.reportValidity();
-}, DEBOUNCE);
+}, DELAY);
 
 //Валидация комментария
 const onCommentValidation = _.debounce((evt) => {
@@ -75,7 +74,7 @@ const onCommentValidation = _.debounce((evt) => {
   }
 
   input.reportValidity();
-}, DEBOUNCE);
+}, DELAY);
 
 //Обработчики
 uploadTextBlock.addEventListener('focus', () => {
