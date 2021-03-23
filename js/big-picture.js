@@ -1,4 +1,8 @@
-import { isEscEvent, renderNodeList } from './util.js';
+import {
+  renderNodeList,
+  createOnModalEscKeydown,
+  creteOnModalCloseClick
+} from './util.js';
 import { VISIBLE_COMMENTS } from './constants.js';
 
 const bigPicture = document.querySelector('.big-picture');
@@ -29,27 +33,16 @@ const createShowMoreComments = (comments, index) => {
       comment.classList.remove('hidden');
     })
 
-    socialComments.querySelectorAll(`li.${'hidden'}`).length === 0 ? moreCommentsButton.classList.add('hidden') : moreCommentsButton.classList.remove('hidden');
+    if (cloneComments.length === (commentsCount + hiddenCommentsLength)) {
+      moreCommentsButton.classList.add('hidden')
+    }
 
     indexOfHidden += VISIBLE_COMMENTS;
     commentsCount += hiddenCommentsLength;
   }
 };
 
-
 const openModal = (moreCommentsCallback) => {
-  const onModalEscKeydown = (evt) => {
-    if (isEscEvent(evt)) {
-      evt.preventDefault();
-      closeModal();
-    }
-  }
-
-  const onModalCloseClick = (evt) => {
-    evt.preventDefault();
-    closeModal();
-  }
-
   const closeModal = () => {
     bigPicture.classList.add('hidden');
     document.body.classList.remove('modal-open');
@@ -59,6 +52,9 @@ const openModal = (moreCommentsCallback) => {
     moreCommentsButton.removeEventListener('click', moreCommentsCallback);
   }
 
+  const onModalEscKeydown = createOnModalEscKeydown(closeModal);
+  const onModalCloseClick = creteOnModalCloseClick(closeModal);
+
   bigPicture.classList.remove('hidden');
   document.body.classList.add('modal-open');
 
@@ -66,7 +62,6 @@ const openModal = (moreCommentsCallback) => {
   bigPictureClose.addEventListener('click', onModalCloseClick);
   moreCommentsButton.addEventListener('click', moreCommentsCallback);
 };
-
 
 const getCommentNodes = (comments = []) => comments.map((comment, index) => {
   const node = socialComment.cloneNode(true);
