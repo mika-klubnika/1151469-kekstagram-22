@@ -7,6 +7,7 @@ const main = document.querySelector('main');
 const MessagesBlockKeys = {
   SUCCESS: 'success',
   ERROR: 'error',
+  DATA_ERROR: 'data-loading-error',
 }
 
 const addMessageElement = id => {
@@ -51,6 +52,9 @@ const showMessageSuccess = () => showMessage(MessagesBlockKeys.SUCCESS);
 //Сообщение об ошибке
 const showMessageError = () => showMessage(MessagesBlockKeys.ERROR);
 
+//Сообщение об ошибке загрузки данных
+const showMessageDataLoadingError = () => addMessageElement(MessagesBlockKeys.DATA_ERROR);
+
 //Отправка формы
 const setFormSubmit = () => {
   uploadForm.addEventListener('submit', (evt) => {
@@ -64,4 +68,4 @@ const setFormSubmit = () => {
   });
 };
 
-export { setFormSubmit, uploadForm }
+export { setFormSubmit, uploadForm, showMessageDataLoadingError }

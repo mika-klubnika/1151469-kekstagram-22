@@ -1,15 +1,12 @@
 import { closeModal } from './upload-form.js';
-import { showAlert } from './util.js';
 
-const getData = (onSuccess) => {
+const getData = (onSuccess, onFail) => {
   fetch('https://22.javascript.pages.academy/kekstagram/data')
     .then((response) => response.json())
     .then((pictures) => {
       onSuccess(pictures);
     })
-    .catch(() => {
-      showAlert('Не удалось загрузить данные. Попробуйте ещё раз');
-    });
+    .catch((error) => onFail(error));
 };
 
 const sendData = (onMessageSuccess, onMessageError, body) => {
