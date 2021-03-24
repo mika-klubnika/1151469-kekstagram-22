@@ -10,21 +10,6 @@ import {
   MAX_PHOTO_SIZE
 } from './constants.js';
 
-const imgEdit = document.querySelector('.img-upload__overlay');
-const close = document.querySelector('#upload-cancel');
-const downloadButton = document.querySelector('.img-upload__input');
-
-const photoSizeButton = document.querySelector('.img-upload__scale');
-const controlValue = document.querySelector('.scale__control--value');
-const photoPreview = document.querySelector('.img-upload__preview').querySelector('img');
-
-let photoSize = 100;
-
-const slider = document.querySelector('.effect-level__slider');
-const effectList = document.querySelector('.effects__list');
-const effectLevel = document.querySelector('.img-upload__effect-level');
-const effectLevelValue = document.querySelector('.effect-level__value');
-
 const SLIDER_OPTIONS = {
   none: {
     options: {},
@@ -92,6 +77,22 @@ const SLIDER_OPTIONS = {
     measurement: '',
   },
 };
+
+const imgEdit = document.querySelector('.img-upload__overlay');
+const close = document.querySelector('#upload-cancel');
+const downloadButton = document.querySelector('.img-upload__input');
+
+const photoSizeButton = document.querySelector('.img-upload__scale');
+const controlValue = document.querySelector('.scale__control--value');
+const photoPreview = document.querySelector('.img-upload__preview').querySelector('img');
+
+let photoSize = 100;
+
+const slider = document.querySelector('.effect-level__slider');
+const effectList = document.querySelector('.effects__list');
+const effectLevel = document.querySelector('.img-upload__effect-level');
+const effectLevelValue = document.querySelector('.effect-level__value');
+
 
 //восстанавливает форму по умолчанию
 const restoreDefault = () => {

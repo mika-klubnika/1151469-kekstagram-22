@@ -21,31 +21,29 @@ const getButtons = (evt) => {
       activeButton.classList.remove('img-filters__button--active');
       target.classList.add('img-filters__button--active');
     }
-  } else {
-    return;
   }
 };
 
 const createOnClick = (pictures) => _.throttle((evt) => {
   const targetId = evt.target.id;
 
-  const newSet = new Set(pictures);
-  const arrayOfSet = [...newSet];
+  const orderedListItemsPictures = new Set(pictures);
+  const arrayOrderedListItemsPictures = [...orderedListItemsPictures];
 
   removePicture();
 
   switch (targetId) {
     case 'filter-random':
-      getPreviewPhotos(getMixedPictures(arrayOfSet));
-      getBigPicture(arrayOfSet);
+      getPreviewPhotos(getMixedPictures(arrayOrderedListItemsPictures));
+      getBigPicture(arrayOrderedListItemsPictures);
       break;
     case 'filter-discussed':
-      getPreviewPhotos((arrayOfSet).sort(sortPictureByCommented));
-      getBigPicture(arrayOfSet);
+      getPreviewPhotos((arrayOrderedListItemsPictures).sort(sortPictureByCommented));
+      getBigPicture(arrayOrderedListItemsPictures);
       break;
     default:
-      getPreviewPhotos(arrayOfSet);
-      getBigPicture(arrayOfSet);
+      getPreviewPhotos(arrayOrderedListItemsPictures);
+      getBigPicture(arrayOrderedListItemsPictures);
   }
 }, DELAY);
 
