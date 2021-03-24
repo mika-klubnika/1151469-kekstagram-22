@@ -3,7 +3,7 @@ import {
   createOnModalEscKeydown,
   creteOnModalCloseClick
 } from './util.js';
-import { uploadForm } from './sending-form.js'
+import { uploadForm } from './sending-form.js';
 import {
   STEP_SIZE_PHOTO,
   MIN_PHOTO_SIZE,
