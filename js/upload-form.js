@@ -1,7 +1,7 @@
 /* global noUiSlider:readonly */
 import {
   createOnModalEscKeydown,
-  creteOnModalCloseClick
+  createOnModalCloseClick
 } from './util.js';
 import { uploadForm } from './sending-form.js';
 import {
@@ -129,7 +129,7 @@ const closeModal = () => {
 };
 
 const onModalEscKeydown = createOnModalEscKeydown(closeModal);
-const onModalCloseClick = creteOnModalCloseClick(closeModal);
+const onModalCloseClick = createOnModalCloseClick(closeModal);
 
 
 downloadButton.addEventListener('change', (evt) => {

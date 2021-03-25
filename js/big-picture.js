@@ -1,7 +1,7 @@
 import {
   renderNodeList,
   createOnModalEscKeydown,
-  creteOnModalCloseClick
+  createOnModalCloseClick
 } from './util.js';
 import { VISIBLE_COMMENTS } from './constants.js';
 
@@ -53,7 +53,7 @@ const openModal = (moreCommentsCallback) => {
   }
 
   const onModalEscKeydown = createOnModalEscKeydown(closeModal);
-  const onModalCloseClick = creteOnModalCloseClick(closeModal);
+  const onModalCloseClick = createOnModalCloseClick(closeModal);
 
   bigPicture.classList.remove('hidden');
   document.body.classList.add('modal-open');

@@ -12,7 +12,7 @@ const createOnModalEscKeydown = (cb) => {
   }
 };
 
-const creteOnModalCloseClick = (cb) => {
+const createOnModalCloseClick = (cb) => {
   return (evt) => {
     evt.preventDefault();
     cb();
@@ -39,5 +39,5 @@ export {
   getMixedPictures,
   sortPictureByCommented,
   createOnModalEscKeydown,
-  creteOnModalCloseClick
+  createOnModalCloseClick
 };

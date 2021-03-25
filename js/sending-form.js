@@ -15,25 +15,25 @@ const addMessageElement = id => {
   main.appendChild(node)
 };
 
-const onCloseMessage = (key) => {
+const closeMessage = (key) => {
   const className = `.${key}`;
   const messageBlock = main.querySelector(className);
 
-  const closeMessage = () => {
+  const removeMessage = () => {
     messageBlock.remove();
     document.removeEventListener('keydown', onCloseKeydown);
   };
 
   const onCloseKeydown = (evt) => {
     if (isEscEvent(evt)) {
-      closeMessage(evt.target.className);
+      removeMessage(evt.target.className);
     }
   };
 
   const onCloseClick = (evt) => {
     const target = evt.target;
     if (target.classList.contains(key) || target.classList.contains(`${key}__button`)) {
-      closeMessage(target.className);
+      removeMessage(target.className);
     }
   };
 
@@ -43,7 +43,7 @@ const onCloseMessage = (key) => {
 
 const showMessage = (key) => {
   addMessageElement(key);
-  onCloseMessage(key);
+  closeMessage(key);
 }
 
 //Сообщение об успехе
