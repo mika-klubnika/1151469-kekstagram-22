@@ -7,7 +7,8 @@ import { uploadForm } from './sending-form.js';
 import {
   STEP_SIZE_PHOTO,
   MIN_PHOTO_SIZE,
-  MAX_PHOTO_SIZE
+  MAX_PHOTO_SIZE,
+  FILE_TYPES
 } from './constants.js';
 
 const SLIDER_OPTIONS = {
@@ -79,19 +80,19 @@ const SLIDER_OPTIONS = {
 };
 
 const imgEdit = document.querySelector('.img-upload__overlay');
-const close = document.querySelector('#upload-cancel');
+const close = imgEdit.querySelector('#upload-cancel');
 const downloadButton = document.querySelector('.img-upload__input');
 
-const photoSizeButton = document.querySelector('.img-upload__scale');
-const controlValue = document.querySelector('.scale__control--value');
-const photoPreview = document.querySelector('.img-upload__preview').querySelector('img');
+const photoSizeButton = imgEdit.querySelector('.img-upload__scale');
+const controlValue = imgEdit.querySelector('.scale__control--value');
+const photoPreview = imgEdit.querySelector('.img-upload__preview').querySelector('img');
 
 let photoSize = 100;
 
-const slider = document.querySelector('.effect-level__slider');
-const effectList = document.querySelector('.effects__list');
-const effectLevel = document.querySelector('.img-upload__effect-level');
-const effectLevelValue = document.querySelector('.effect-level__value');
+const slider = imgEdit.querySelector('.effect-level__slider');
+const effectList = imgEdit.querySelector('.effects__list');
+const effectLevel = imgEdit.querySelector('.img-upload__effect-level');
+const effectLevelValue = imgEdit.querySelector('.effect-level__value');
 
 
 //восстанавливает форму по умолчанию
@@ -135,6 +136,26 @@ const onModalCloseClick = createOnModalCloseClick(closeModal);
 downloadButton.addEventListener('change', (evt) => {
   evt.preventDefault();
   openModal();
+});
+
+//Показывает изображение выбранное пользователем
+downloadButton.addEventListener('change', () => {
+  const file = downloadButton.files[0];
+  const fileName = file.name.toLowerCase();
+
+  const matches = FILE_TYPES.some((it) => {
+    return fileName.endsWith(it);
+  });
+
+  if (matches) {
+    const reader = new FileReader();
+
+    reader.addEventListener('load', () => {
+      photoPreview.src = reader.result;
+    });
+
+    reader.readAsDataURL(file);
+  }
 });
 
 //Уменьшить/Увеличить изображение

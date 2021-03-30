@@ -16,6 +16,9 @@ const MAX_COMMENT_LENGTH = 140;
 const DELAY = 500;
 const VISIBLE_COMMENTS = 5;
 
+const FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
+
+
 export {
   MAX_USER_PUBLICATION,
   MAX_NUMBER_AVATAR,
@@ -30,5 +33,6 @@ export {
   MAX_HASHTAG_COUNT,
   MAX_COMMENT_LENGTH,
   DELAY,
-  VISIBLE_COMMENTS
+  VISIBLE_COMMENTS,
+  FILE_TYPES
 };
